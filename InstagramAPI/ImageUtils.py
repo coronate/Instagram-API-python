@@ -7,14 +7,14 @@ def getImageSize(fname):
         head = fhandle.read(24)
         if len(head) != 24:
             raise RuntimeError("Invalid Header")
-        if imghdr.what(fname) == 'png':
+        if imghdr.what(fname) == 'png' or "png" in fname:
             check = struct.unpack('>i', head[4:8])[0]
             if check != 0x0d0a1a0a:
                 raise RuntimeError("PNG: Invalid check")
             width, height = struct.unpack('>ii', head[16:24])
-        elif imghdr.what(fname) == 'gif':
+        elif imghdr.what(fname) == 'gif' or "gif" in fname:
             width, height = struct.unpack('<HH', head[6:10])
-        elif imghdr.what(fname) == 'jpeg':
+        elif imghdr.what(fname) == 'jpeg' or "jpeg" in fname or "jpg" in fname:
             fhandle.seek(0)  # Read 0xff next
             size = 2
             ftype = 0
